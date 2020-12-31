@@ -630,7 +630,7 @@ impl Display {
         };
 
         // Update IME position.
-        self.window.update_ime_position(ime_position, &self.size_info);
+        self.window.update_ime_position(ime_position, &self.size_info, &config.cursor.ime_offset);
 
         // Frame event should be requested before swaping buffers, since it requires surface
         // `commit`, which is done by swap buffers under the hood.

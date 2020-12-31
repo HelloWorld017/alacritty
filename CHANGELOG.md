@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - History for search mode, bound to ^P/^N/Up/Down by default
 - Default binding to cancel search on Ctrl+C
 - History position indicator for search and vi mode
+- New `cursor.ime_offset` option to set the position of IME composition preview
 
 ### Changed
 
@@ -54,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - IME input swallowed after triggering a key binding
 - Crash on Wayland due to non-standard fontconfig configuration
 - Search without vi mode not jumping properly between all matches
+- IME composition preview not appearing on Windows
 
 ### Removed
 

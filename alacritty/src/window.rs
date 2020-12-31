@@ -50,6 +50,7 @@ use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 #[cfg(windows)]
 use winapi::shared::minwindef::WORD;
 
+use alacritty_terminal::config::LetterDelta;
 use alacritty_terminal::index::Point;
 use alacritty_terminal::term::SizeInfo;
 
@@ -421,17 +422,36 @@ impl Window {
     }
 
     /// Adjust the IME editor position according to the new location of the cursor.
-    #[cfg(not(windows))]
-    pub fn update_ime_position(&mut self, point: Point, size: &SizeInfo) {
-        let nspot_x = f64::from(size.padding_x() + point.col.0 as f32 * size.cell_width());
-        let nspot_y = f64::from(size.padding_y() + (point.line.0 + 1) as f32 * size.cell_height());
+    pub fn update_ime_position(
+        &mut self,
+        point: Point,
+        size: &SizeInfo,
+        offset: &LetterDelta<f32>,
+    ) {
+        let window_size = self.window().inner_size();
+
+        let nspot_x = f64::min(
+            f64::max(
+                f64::from(
+                    size.padding_x() + (point.col.0 as f32 + offset.columns) * size.cell_width(),
+                ),
+                0f64,
+            ),
+            window_size.width as f64 - size.cell_width() as f64,
+        );
+
+        let nspot_y = f64::min(
+            f64::max(
+                f64::from(
+                    size.padding_y() + (point.line.0 as f32 + offset.lines) * size.cell_height(),
+                ),
+                0f64,
+            ),
+            window_size.height as f64 - size.cell_height() as f64,
+        );
 
         self.window().set_ime_position(PhysicalPosition::new(nspot_x, nspot_y));
     }
-
-    /// No-op, since Windows does not support IME positioning.
-    #[cfg(windows)]
-    pub fn update_ime_position(&mut self, _point: Point, _size_info: &SizeInfo) {}
 
     pub fn swap_buffers(&self) {
         self.windowed_context.swap_buffers().expect("swap buffers");

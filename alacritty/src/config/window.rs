@@ -45,6 +45,9 @@ pub struct WindowConfig {
     /// Window class.
     pub class: Class,
 
+    /// IME offset.
+    pub ime_offset: Delta<i8>,
+
     /// Pixel padding.
     padding: Delta<u8>,
 
@@ -64,6 +67,7 @@ impl Default for WindowConfig {
             gtk_theme_variant: Default::default(),
             dynamic_padding: Default::default(),
             class: Default::default(),
+            ime_offset: Default::default(),
             padding: Default::default(),
             dimensions: Default::default(),
         }

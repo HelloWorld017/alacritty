@@ -88,7 +88,7 @@ pub struct Cursor {
     pub style: ConfigCursorStyle,
     pub vi_mode_style: Option<ConfigCursorStyle>,
     pub unfocused_hollow: bool,
-
+    pub ime_offset: LetterDelta<f32>,
     thickness: Percentage,
     blink_interval: u64,
 }
@@ -101,6 +101,7 @@ impl Default for Cursor {
             blink_interval: 750,
             style: Default::default(),
             vi_mode_style: Default::default(),
+            ime_offset: LetterDelta { columns: 0f32, lines: 1f32 },
         }
     }
 }
@@ -194,6 +195,12 @@ impl Into<bool> for CursorBlinking {
     fn into(self) -> bool {
         self == Self::On || self == Self::Always
     }
+}
+
+#[derive(ConfigDeserialize, Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct LetterDelta<T: Default> {
+    pub columns: T,
+    pub lines: T,
 }
 
 #[serde(untagged)]

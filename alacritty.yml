@@ -388,6 +388,12 @@
   # from `0.0` to `1.0`.
   #thickness: 0.15
 
+  # IME offset
+  # Relative position of IME composition preview from the cursor
+  #ime_offset:
+    #columns: 0
+    #lines: 0
+
 # Live config reload (changes require restart)
 #live_config_reload: true
 
